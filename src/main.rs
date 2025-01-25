@@ -56,4 +56,20 @@ async fn main() {
     // Task 2: Done
     // Task 1: Done
     // main thread done  <- print after all tasks are done
+
+    let do_task_1 = tokio::spawn(do_task_1());
+    let do_task_2 = tokio::spawn(do_task_2());
+
+    let _ = tokio::join!(do_task_1, do_task_2);
+    // output: depends on which task finishes first.
+    // Do task 1
+    // Do task 2
+}
+
+async fn do_task_1() {
+    println!("Do task 1");
+}
+
+async fn do_task_2() {
+    println!("Do task 2");
 }
