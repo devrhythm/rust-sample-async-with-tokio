@@ -29,7 +29,31 @@ async fn main() {
     })
     .await
     .unwrap();
+
+    println!("main thread done");
     // output:
     // Hello tokio 1
     // Hello tokio 2
+    // main thread done <- print after all tasks are done
+
+    // Note: tokio::join!
+    // macro in Rust is used to run multiple asynchronous tasks concurrently.
+    // It allows you to await multiple futures simultaneously and returns a tuple of their outputs.
+    // Each future is executed in parallel,
+    // and the macro waits for all of them to complete before returning the results
+    let task_1 = tokio::spawn(async {
+        println!("Task 1: Done");
+    });
+
+    let task_2 = tokio::spawn(async {
+        println!("Task 2: Done");
+    });
+
+    let _ = tokio::join!(task_1, task_2);
+
+    println!("main thread done");
+    // output: depends on which task finishes first.
+    // Task 2: Done
+    // Task 1: Done
+    // main thread done  <- print after all tasks are done
 }
